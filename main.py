@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import (
     QProgressBar,
 )
 from PyQt6.QtCore import Qt, QTimer
+from pygame import init, mixer, time
 
 
 class MainWindow(QWidget):
@@ -16,7 +17,9 @@ class MainWindow(QWidget):
         self.timer = QTimer(self)
         self.setGeometry(608, 334, 150, 100)
         self.setWindowTitle("PomodoroApp")
-
+        init()
+        mixer.init()
+        self.sound = mixer.Sound("assets\\bell.wav")
         self.layout = QFormLayout()
         self.setLayout(self.layout)
 
@@ -53,38 +56,48 @@ class MainWindow(QWidget):
 
         self.button_start.clicked.connect(self.start_pomodoro)
         self.timer.start()
-
+        self.change_event = True
+        self.disconnect_pomodoro = False
         self.show()
 
     def start_pomodoro(self):
+        self.change_event = True
+        self.timer.setInterval(500)
         self.label_state.setText("Work Time!")
         self.button_start.setEnabled(False)
-        self.timer.setInterval(500)
-        self.timer.timeout.connect(self.grow_pbar)
+        if self.disconnect_pomodoro:
+            self.timer.timeout.disconnect(self.start_pbar)
+        self.timer.timeout.connect(self.start_pbar)
         self.timer.start()
 
-    def grow_pbar(self):
-        if self.current_value < self.pbar.maximum():
+    def start_pbar(self):
+        if self.current_value < 100:
             self.current_value += 1
             self.pbar.setValue(self.current_value)
-        elif self.current_value == 100:
-            self.current_value = 0
+        else:
+            self.sound.play()
+            time.delay(int(self.sound.get_length() * 500))
             self.pbar.reset()
+            self.current_value = 0
             self.timer.stop()
-            self.start_rest()
+            if self.change_event:
+                self.start_rest()
+            else:
+                self.start_pomodoro()
 
     def start_rest(self):
-        self.label_state.setText("Rest Time!")
+        self.change_event = not self.change_event
+        self.disconnect_pomodoro = True
         self.timer.setInterval(100)
-        self.timer.timeout.connect(self.grow_pbar)
+        self.label_state.setText("Rest Time!")
+        self.timer.timeout.disconnect(self.start_pbar)
+        self.timer.timeout.connect(self.start_pbar)
         self.timer.start()
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    # create the main window
     window = MainWindow()
 
-    # start the event loop
     sys.exit(app.exec())
