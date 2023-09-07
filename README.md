@@ -33,16 +33,18 @@ Si deseas ejecutar la aplicación desde el código fuente, sigue estos pasos:
 
 1. Clona el repositorio:
 
-    ```bash
-    git clone https://github.com/CaesaRR19/PomodoroApp.git
+   ```bash
+   git clone https://github.com/CaesaRR19/PomodoroApp.git
+
+   ```
 
 2. Navega al directorio del proyecto:
 
-    ```cd pomodoro-app```
-  
+   `cd pomodoro-app`
+
 3. Ejecuta la aplicación:
 
-    ```python main.py```
+   `python main.py`
 
 ## Contribución
 
@@ -51,8 +53,7 @@ Si deseas contribuir a este proyecto, ¡eres bienvenido! Siéntete libre de envi
 ## Licencia
 
 Este proyecto está bajo la Licencia MIT.
- 
-Gracias por tu interés en mi humilde programa <3
 
+Gracias por tu interés en mi humilde programa <3
 
 Icono de Pomodoro creado por [Freepik](https://www.flaticon.com/authors/freepik) en [Flaticon](https://www.flaticon.com/), con el título "[Pomodoro technique icons](https://www.flaticon.com/free-icons/pomodoro-technique)."
