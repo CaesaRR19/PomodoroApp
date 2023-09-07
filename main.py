@@ -2,7 +2,6 @@
 """
 import sys
 
-# pylint: disable=E0611
 from PyQt6.QtWidgets import (
     QApplication,
     QWidget,
@@ -13,6 +12,8 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6 import QtGui
 from PyQt6.QtCore import Qt, QTimer
+
+# pylint: disable=E0611
 from pygame import init, mixer, time
 
 
@@ -93,7 +94,6 @@ class MainWindow(QWidget):
 
         self.button_start.clicked.connect(self.start_pomodoro)
         self.button_stop.clicked.connect(self.stop_pomodoro)
-        # self.timer.start()
         self.change_event = True
 
         self.show()
@@ -102,7 +102,7 @@ class MainWindow(QWidget):
         """Inicia el pomodoro, y se debe ejecutar cada 15 segundos."""
         self.button_stop.setEnabled(True)
         self.change_event = True
-        self.timer.setInterval(150)
+        self.timer.setInterval(15000)
         self.label_state.setText("Work Time!")
         self.button_start.setEnabled(False)
         try:
@@ -133,7 +133,7 @@ class MainWindow(QWidget):
     def start_rest(self):
         """Inicia el modo de descanso, se ejecuta cada tres segundos."""
         self.change_event = not self.change_event
-        self.timer.setInterval(30)
+        self.timer.setInterval(3000)
         self.label_state.setText("Rest Time!")
         self.timer.timeout.disconnect(self.start_pbar)
         self.timer.timeout.connect(self.start_pbar)
